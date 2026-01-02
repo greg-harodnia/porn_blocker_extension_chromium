@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Blocked</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        margin: 0;
+        padding: 18px;
+        color: #111827;
+        background: #ffffff;
+      }
+      .card {
+        max-width: 700px;
+        margin: 0 auto;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 16px;
+        background: #ffffff;
+      }
+      h1 {
+        margin: 0 0 10px;
+        font-size: 18px;
+      }
+      .meta {
+        margin-top: 8px;
+        font-size: 13px;
+        color: #374151;
+        word-break: break-word;
+      }
+      .pill {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: #111827;
+        color: #ffffff;
+        font-size: 12px;
+      }
+      a {
+        color: #111827;
+      }
+      button {
+        margin-top: 14px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid #111827;
+        background: #111827;
+        color: white;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Blocked</h1>
+      <div class="meta">
+        Reason: <span id="reason" class="pill">content</span>
+      </div>
+      <div class="meta">
+        Matched keyword: <span id="keyword" class="pill">-</span>
+      </div>
+      <div class="meta">
+        Original URL:
+        <div><a id="url" href="#" target="_blank" rel="noreferrer">-</a></div>
+      </div>
+      <button id="backBtn" type="button">Go back</button>
+    </div>
+
+    <script src="blocked.js"></script>
+  </body>
+</html>
