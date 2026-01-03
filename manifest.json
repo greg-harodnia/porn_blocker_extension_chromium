@@ -19,7 +19,9 @@
     {
       "resources": [
         "blocked.html",
-        "blocked.js"
+        "blocked.js",
+        "safe.html",
+        "safe.js"
       ],
       "matches": [
         "<all_urls>"
