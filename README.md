@@ -1,4 +1,4 @@
-# Healthy Man - Porn Blocker Manifest V3Extension
+# Healthy Man - Porn Blocker Manifest V3 Extension
 
 A Chrome extension that blocks adult content and provides a reflective space for building self-control.
 
