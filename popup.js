@@ -60,13 +60,13 @@ async function refresh() {
 
   document.getElementById("totalBlocked").textContent = String(res.totalBlocked ?? 0);
   renderBlocklist(res.userBlocklist || []);
-  
+
   // Load toggle state
   const toggleRes = await sendMessage({ type: "getUrlKeywordToggle" });
   if (toggleRes && toggleRes.ok) {
     document.getElementById("urlKeywordToggle").checked = toggleRes.enabled;
   }
-  
+
   setStatus("", null);
 }
 

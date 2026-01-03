@@ -79,9 +79,9 @@ function buildRules(domains, keywords) {
     rules.push({
       id,
       priority: RULE_PRIORITY,
-      action: { 
+      action: {
         type: "redirect",
-        redirect: { 
+        redirect: {
           extensionPath: "/safe.html"
         }
       },
@@ -97,9 +97,9 @@ function buildRules(domains, keywords) {
     rules.push({
       id,
       priority: RULE_PRIORITY,
-      action: { 
+      action: {
         type: "redirect",
-        redirect: { 
+        redirect: {
           extensionPath: "/safe.html"
         }
       },
@@ -128,11 +128,11 @@ async function ensureInitialized() {
   const seed = await loadSeedBlocklist();
   const user = await getUserBlocklist();
   const merged = Array.from(new Set([...seed, ...user])).sort();
-  
+
   // Check if URL keyword blocking is enabled
   const settings = await chrome.storage.local.get(STORAGE_KEYS.urlKeywordBlocking);
   const urlKeywordBlockingEnabled = settings[STORAGE_KEYS.urlKeywordBlocking] === true;
-  
+
   if (urlKeywordBlockingEnabled) {
     const keywords = await loadSeedKeywords().catch(() => []);
     await syncDynamicRules(merged, keywords);
@@ -148,11 +148,11 @@ async function ensureInitialized() {
 }
 
 chrome.runtime.onInstalled.addListener(() => {
-  ensureInitialized().catch(() => {});
+  ensureInitialized().catch(() => { });
 });
 
 chrome.runtime.onStartup?.addListener(() => {
-  ensureInitialized().catch(() => {});
+  ensureInitialized().catch(() => { });
 });
 
 if (chrome.declarativeNetRequest.onRuleMatchedDebug) {
@@ -165,7 +165,7 @@ if (chrome.declarativeNetRequest.onRuleMatchedDebug) {
   });
 }
 
-ensureInitialized().catch(() => {});
+ensureInitialized().catch(() => { });
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   (async () => {
@@ -184,10 +184,10 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     if (message.type === "setUrlKeywordToggle") {
       const enabled = message.enabled === true;
       await chrome.storage.local.set({ [STORAGE_KEYS.urlKeywordBlocking]: enabled });
-      
+
       // Re-initialize blocking rules with new setting
       await ensureInitialized();
-      
+
       sendResponse({ ok: true, message: enabled ? "URL keyword blocking enabled" : "URL keyword blocking disabled" });
       return;
     }
