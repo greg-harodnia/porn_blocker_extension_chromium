@@ -4,8 +4,8 @@
   "version": "0.1",
   "description": "A porn blocker extension",
   "action": {
-    "default_popup": "popup.html",
-    "default_icon": "icon.png"
+    "default_popup": "src/components/popup/popup.html",
+    "default_icon": "assets/icon.png"
   },
   "permissions": [
     "storage",
@@ -18,10 +18,8 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "blocked.html",
-        "blocked.js",
-        "safe.html",
-        "safe.js"
+        "src/components/safe-page/safe.html",
+        "src/components/safe-page/safe.js"
       ],
       "matches": [
         "<all_urls>"
@@ -29,6 +27,14 @@
     }
   ],
   "background": {
-    "service_worker": "background.js"
-  }
+    "service_worker": "src/background/background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content/contentScript.js"],
+      "type": "module"
+    }
+  ]
 }

@@ -18,6 +18,38 @@ When a site is blocked, you're redirected to a Safe Page that includes:
 
 ![A screenshot of the extension popup](screenshot.png)
 
+## Folder structure
+
+```
+healthy-man-extension/
+├── src/
+│   ├── components/
+│   │   ├── popup/
+│   │   │   ├── popup.html
+│   │   │   ├── popup.js
+│   │   │   └── popup.css
+│   │   └── safe-page/
+│   │       ├── safe.html
+│   │       ├── safe.js
+│   │       └── safe.css
+│   ├── background/
+│   │   └── background.js
+│   ├── content/
+│   │   └── contentScript.js
+│   ├── shared/
+│   │   ├── constants.js
+│   │   ├── utils.js
+│   │   └── storage.js
+│   └── data/
+│       ├── blocklist.json
+│       └── keywords.json
+├── assets/
+│   └── icon.png
+├── manifest.json
+└── README.md
+
+```
+
 ## Installation
 
 1. Download the extension files
