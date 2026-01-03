@@ -152,12 +152,6 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       return;
     }
 
-    if (message.type === "getKeywords") {
-      const keywords = await loadSeedKeywords().catch(() => []);
-      sendResponse({ ok: true, keywords });
-      return;
-    }
-
     if (message.type === "contentBlocked") {
       const obj = await chrome.storage.local.get(STORAGE_KEYS.totalBlocked);
       const current = typeof obj[STORAGE_KEYS.totalBlocked] === "number" ? obj[STORAGE_KEYS.totalBlocked] : 0;
