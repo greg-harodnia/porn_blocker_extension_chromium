@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "A healthy man",
+  "name": "Healthy man",
   "version": "0.1",
   "description": "A porn blocker extension",
   "action": {
@@ -19,7 +19,9 @@
     {
       "resources": [
         "blocked.html",
-        "blocked.js"
+        "blocked.js",
+        "safe.html",
+        "safe.js"
       ],
       "matches": [
         "<all_urls>"

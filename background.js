@@ -2,7 +2,8 @@
 const STORAGE_KEYS = {
   userBlocklist: "userBlocklist",
   totalBlocked: "totalBlocked",
-  urlKeywordBlocking: "urlKeywordBlocking"
+  urlKeywordBlocking: "urlKeywordBlocking",
+  userNotes: "userNotes"
 };
 
 const RULESET_ID_BASE = 1000;
@@ -78,7 +79,12 @@ function buildRules(domains, keywords) {
     rules.push({
       id,
       priority: RULE_PRIORITY,
-      action: { type: "block" },
+      action: { 
+        type: "redirect",
+        redirect: { 
+          extensionPath: "/safe.html"
+        }
+      },
       condition: {
         urlFilter: `||${domain}^`,
         resourceTypes: ["main_frame"]
@@ -91,7 +97,12 @@ function buildRules(domains, keywords) {
     rules.push({
       id,
       priority: RULE_PRIORITY,
-      action: { type: "block" },
+      action: { 
+        type: "redirect",
+        redirect: { 
+          extensionPath: "/safe.html"
+        }
+      },
       condition: {
         urlFilter: `*${keyword}*`,
         resourceTypes: ["main_frame"]
@@ -126,6 +137,7 @@ async function ensureInitialized() {
     const keywords = await loadSeedKeywords().catch(() => []);
     await syncDynamicRules(merged, keywords);
   } else {
+    // Always sync domains, just without keywords
     await syncDynamicRules(merged, []);
   }
 
@@ -177,6 +189,12 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       await ensureInitialized();
       
       sendResponse({ ok: true, message: enabled ? "URL keyword blocking enabled" : "URL keyword blocking disabled" });
+      return;
+    }
+
+    if (message.type === "getKeywords") {
+      const keywords = await loadSeedKeywords().catch(() => []);
+      sendResponse({ ok: true, keywords });
       return;
     }
 
