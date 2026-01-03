@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Healthy Man</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+  <h1>Healthy Man</h1>
+  <div class="card">
+    <div class="meta">
+      Total blocks (all time): <span id="totalBlocked" class="count">0</span>
+    </div>
+
+    <div style="height: 10px"></div>
+
+    <div class="row">
+      <input id="domainInput" type="text" placeholder="example.com" />
+      <button id="addBtn" type="button">Add</button>
+    </div>
+    <!-- <div id="status" class="meta"></div> -->
+    <!-- TODO: status feature is not used, remove it -->
+
+    <div class="meta" style="margin-top: 10px; font-weight: 600;">Your blocked sites</div>
+    <ul id="blocklist"></ul>
+
+    <div style="height: 15px;"></div>
+
+    <div class="row" style="justify-content: space-between; align-items: center;">
+      <span class="meta" style="margin: 0; font-weight: 600;">Block by URL keywords</span>
+      <label class="switch">
+        <input type="checkbox" id="urlKeywordToggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div class="meta" style="font-size: 11px; color: #6b7280; margin-top: 4px;">
+      Block URLs that contain unsafe keywords
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+
+</html>
