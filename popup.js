@@ -60,6 +60,13 @@ async function refresh() {
 
   document.getElementById("totalBlocked").textContent = String(res.totalBlocked ?? 0);
   renderBlocklist(res.userBlocklist || []);
+  
+  // Load toggle state
+  const toggleRes = await sendMessage({ type: "getUrlKeywordToggle" });
+  if (toggleRes && toggleRes.ok) {
+    document.getElementById("urlKeywordToggle").checked = toggleRes.enabled;
+  }
+  
   setStatus("", null);
 }
 
@@ -98,6 +105,7 @@ async function removeDomain(domain) {
 document.addEventListener("DOMContentLoaded", () => {
   const addBtn = document.getElementById("addBtn");
   const input = document.getElementById("domainInput");
+  const urlKeywordToggle = document.getElementById("urlKeywordToggle");
 
   addBtn.addEventListener("click", () => {
     addDomain().catch((e) => setStatus(String(e?.message || e), "error"));
@@ -105,6 +113,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") addBtn.click();
+  });
+
+  urlKeywordToggle.addEventListener("change", async (e) => {
+    const enabled = e.target.checked;
+    const res = await sendMessage({ type: "setUrlKeywordToggle", enabled });
+    if (res && res.ok) {
+      setStatus(res.message || "", res.ok ? "ok" : "error");
+    } else {
+      setStatus(res?.error || "Failed to update setting", "error");
+    }
   });
 
   refresh().catch((e) => setStatus(String(e?.message || e), "error"));

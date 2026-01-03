@@ -1,7 +1,8 @@
 
 const STORAGE_KEYS = {
   userBlocklist: "userBlocklist",
-  totalBlocked: "totalBlocked"
+  totalBlocked: "totalBlocked",
+  urlKeywordBlocking: "urlKeywordBlocking"
 };
 
 const RULESET_ID_BASE = 1000;
@@ -114,10 +115,19 @@ async function syncDynamicRules(domains, keywords) {
 
 async function ensureInitialized() {
   const seed = await loadSeedBlocklist();
-  const keywords = await loadSeedKeywords().catch(() => []);
   const user = await getUserBlocklist();
   const merged = Array.from(new Set([...seed, ...user])).sort();
-  await syncDynamicRules(merged, keywords);
+  
+  // Check if URL keyword blocking is enabled
+  const settings = await chrome.storage.local.get(STORAGE_KEYS.urlKeywordBlocking);
+  const urlKeywordBlockingEnabled = settings[STORAGE_KEYS.urlKeywordBlocking] === true;
+  
+  if (urlKeywordBlockingEnabled) {
+    const keywords = await loadSeedKeywords().catch(() => []);
+    await syncDynamicRules(merged, keywords);
+  } else {
+    await syncDynamicRules(merged, []);
+  }
 
   const obj = await chrome.storage.local.get(STORAGE_KEYS.totalBlocked);
   if (typeof obj[STORAGE_KEYS.totalBlocked] !== "number") {
@@ -149,6 +159,24 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   (async () => {
     if (!message || typeof message.type !== "string") {
       sendResponse({ ok: false, error: "Invalid message" });
+      return;
+    }
+
+    if (message.type === "getUrlKeywordToggle") {
+      const obj = await chrome.storage.local.get(STORAGE_KEYS.urlKeywordBlocking);
+      const enabled = obj[STORAGE_KEYS.urlKeywordBlocking] === true;
+      sendResponse({ ok: true, enabled });
+      return;
+    }
+
+    if (message.type === "setUrlKeywordToggle") {
+      const enabled = message.enabled === true;
+      await chrome.storage.local.set({ [STORAGE_KEYS.urlKeywordBlocking]: enabled });
+      
+      // Re-initialize blocking rules with new setting
+      await ensureInitialized();
+      
+      sendResponse({ ok: true, message: enabled ? "URL keyword blocking enabled" : "URL keyword blocking disabled" });
       return;
     }
 
